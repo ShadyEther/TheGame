@@ -30,29 +30,26 @@ class TicTactoe():
                     print("@",end=" ")
             print()
 
-    def take_input(self):
-        x,y=map(int,input().split())
-        if x < 3 and y < 3 and self.board[x][y]==-1:
-            return x,y
-        else:
-            return [3,3]
-            
     def update_board(self,x,y,player):
-        if self.board[x][y] ==-1:
-            self.board[x][y]=player
-            return True
-        else:
-            return False
+        self.board[x][y]=player
+
+    def take_input(self):
+        while True:
+            x,y=map(int,input("Enter Your position like x,y within range [0,1,2]: ").split())
+            if 0<=x<3 and 0<=y<3 and self.board[x][y]==-1:
+                return x,y
+            print("Invalid Input! Choose an avaliable coordinate!")     
+    
 
     
     def check_win(self):
         # check rows and cols and diagonals for same values
-        for row in self.board:
-            if row[0]==row[1]==row[2]!=-1: #ch3ck rows
-                return row[0]
-        for col in range(3):
-            if self.board[0][col]==self.board[1][col]==self.board[2][col]!=-1: #check cols
-                return self.board[0][col]
+        for _ in range(3):
+            if self.board[_][0]==self.board[_][1]==self.board[_][2]!=-1:
+                return self.board[_][0]
+            if self.board[0][_]==self.board[1][_]==self.board[2][_]!=-1: #check cols
+                return self.board[0][_]
+
         if self.board[0][0]==self.board[1][1]==self.board[2][2]!=-1:#chec left diagonal
             return self.board[0][0]
         if  self.board[0][2]==self.board[1][1]==self.board[2][0]!=-1:#check right diagonal
@@ -64,28 +61,22 @@ class TicTactoe():
         # TODO: takeinput
         turn=0
         totalturns=0
-        while(totalturns<8):
-            self.display_screen()
+        self.display_screen()
+        while(totalturns<9):
             print("Player",turn+1,"'s Turn")
             input=self.take_input()
-            if input[0]!=3 and input[1]!=3:
-                if self.update_board(input[0],input[1],turn):
-                    winner=self.check_win()
-                    if winner != -1:
-                        print("winner is Player: ",winner)
-                        break
-                    else:
-                        if totalturns>=7:
-                            print("Match is tied")
-                        else:
-                            turn=not(turn)
-                            totalturns+=1
-                            # proceed  with next turn
-                else:
-                    print("That position is already filled")
+            self.update_board(input[0],input[1],turn)
+            self.display_screen()
+            winner=self.check_win()
+            if winner != -1:
+                print("winner is Player: ",winner)
+                break
             else:
-                print("Invalid input! Enter between {0, 1, 2}")
-                 
+                if totalturns>=8:
+                    print("Match is tied")
+                else:
+                    turn=not(turn)
+                    totalturns+=1             
             # takeinpput again
 
 
